@@ -237,9 +237,9 @@ FlipFlop Status — 2026-05-10
 
 Status              Count
 Flopped (done)        22
-Flipped (drafts)       1
-Stale (needs re-flip)  3
-Eligible (waiting)   171
+Flipped (drafts)       3
+Stale (needs re-flip)  8
+Eligible (waiting)   164
 Total in play        197
 
 Recently flopped:
