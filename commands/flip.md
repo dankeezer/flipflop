@@ -12,44 +12,51 @@ A note is eligible if it meets ALL of the following:
 - Is NOT a purely completed checklist (all `- [x]` items, none unchecked)
 
 To find a random eligible note, run:
+
 ```
-python3 -c "
-import os, re, random, glob
+python3 << 'PYEOF'
+import os, re, glob, json, random
 
 vault = 'YOUR_VAULT_PATH'
 daily = re.compile(r'^\d{4}-\d{2}-\d{2}\.md$')
 excluded_folders = ['Archive', 'Templates', 'Meta']  # update for your vault
 excluded_files = []
+INDEX_PATH = vault + '/.flipflop-index.json'
+INDEX_THRESHOLD = 500
 
-eligible = []
-for path in glob.glob(vault + '/**/*.md', recursive=True) + glob.glob(vault + '/*.md'):
-    rel = os.path.relpath(path, vault)
-    if daily.match(os.path.basename(rel)):
-        continue
-    if any(rel.startswith(e) for e in excluded_folders):
-        continue
-    if os.path.basename(rel) in excluded_files:
-        continue
+all_paths = glob.glob(vault + '/**/*.md', recursive=True)
+
+if len(all_paths) >= INDEX_THRESHOLD:
     try:
-        content = open(path).read()
-        if re.search(r'tags:.*\n(  - .*\n)*  - flipped', content, re.MULTILINE):
-            continue
-        if re.search(r'tags:.*\n(  - .*\n)*  - archived', content, re.MULTILINE):
-            continue
-        is_flopped = bool(re.search(r'tags:.*\n(  - .*\n)*  - flopped', content, re.MULTILINE))
-        is_stale = bool(re.search(r'tags:.*\n(  - .*\n)*  - stale', content, re.MULTILINE))
-        if is_flopped and not is_stale:
-            continue
-        items = re.findall(r'- \[(.)\]', content)
-        if items and all(x == 'x' for x in items):
-            continue
+        stored = json.load(open(INDEX_PATH)).get('notes', {})
+        eligible = [rel for rel, e in stored.items() if e.get('status') in ('eligible', 'stale')]
+        print(random.choice(eligible) if eligible else 'NONE')
     except:
-        pass
-    eligible.append(rel)
-
-print(random.choice(eligible))
-"
+        print('INDEX_MISSING')
+else:
+    eligible = []
+    for path in all_paths:
+        rel = os.path.relpath(path, vault)
+        basename = os.path.basename(rel)
+        if daily.match(basename): continue
+        if any(rel.startswith(e) for e in excluded_folders): continue
+        if basename in excluded_files: continue
+        try:
+            content = open(path).read()
+            if re.search(r'tags:.*\n(  - .*\n)*  - flipped',  content, re.MULTILINE): continue
+            if re.search(r'tags:.*\n(  - .*\n)*  - archived', content, re.MULTILINE): continue
+            is_flopped = bool(re.search(r'tags:.*\n(  - .*\n)*  - flopped', content, re.MULTILINE))
+            is_stale   = bool(re.search(r'tags:.*\n(  - .*\n)*  - stale',   content, re.MULTILINE))
+            if is_flopped and not is_stale: continue
+            items = re.findall(r'- \[(.)\]', content)
+            if items and all(x == 'x' for x in items): continue
+        except: pass
+        eligible.append(rel)
+    print(random.choice(eligible) if eligible else 'NONE')
+PYEOF
 ```
+
+If the script prints `INDEX_MISSING`, run `/flip-status` first to build the index, then retry.
 
 ## Steps
 
@@ -109,12 +116,26 @@ Always include an opening paragraph (no heading) and `##` sections as the conten
 
 ### 5. Link Pass
 
-Get all note names from the vault:
+Count the total notes in the vault:
+```
+python3 -c "import glob; print(len(glob.glob('YOUR_VAULT_PATH/**/*.md', recursive=True)))"
+```
+
+**Below 500 notes — full fidelity:**
+Get all note names and pass the complete list. Check each concept in the draft against the full list, read candidate notes to confirm.
 ```
 find YOUR_VAULT_PATH -name "*.md" | sed 's|.*/||; s|\.md$||'
 ```
 
-For each concept, place, person, or object mentioned in the draft, check whether a note exists that is genuinely about that topic. Read candidate notes briefly before linking.
+**500 notes or above — filtered:**
+Load the index to get all note titles, then filter to those sharing meaningful words with concepts mentioned in the draft (exclude stop words: the, a, an, in, of, to, and, or, for, with, at, by). Pass only the filtered list to yourself. Still read candidate notes to confirm before linking.
+```
+python3 -c "
+import json
+stored = json.load(open('YOUR_VAULT_PATH/.flipflop-index.json')).get('notes', {})
+for entry in stored.values(): print(entry.get('title',''))
+"
+```
 
 Rules:
 - Never use aliased links (`[[Note Name|alias]]`) — always use the exact note name, rewriting the sentence if needed
