@@ -267,9 +267,9 @@ Excluded from pool:
 - 0 archived
 - 3 completed checklists
 
-→ 1 draft in progress — run /flop to finalize Conference Room Booking Policy.
-→ 3 stale notes — run /flip to revisit the oldest one.
-→ 171 notes waiting — run /flip to enrich the next one.
+→ 3 drafts in progress — run /flop to finalize the most recent.
+→ 8 stale notes — run /flip to revisit the oldest one.
+→ 164 notes waiting — run /flip to enrich the next one.
 ```
 
 ### Staleness Check
