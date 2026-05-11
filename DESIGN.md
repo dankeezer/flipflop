@@ -1,6 +1,6 @@
 # FlipFlop — Design Document
 
-**Version 1.3**
+**Version 1.4**
 
 FlipFlop is a progressive wiki-building system for Obsidian vaults. It uses a conversational AI assistant to transform rough, unstructured notes into polished Wikipedia-style reference entries through a structured interview process. The system is LLM-agnostic and requires only that the AI has read and write access to the vault's markdown files.
 
@@ -22,6 +22,8 @@ FlipFlop is a progressive wiki-building system for Obsidian vaults. It uses a co
 12. [Link Pass](#link-pass)
 13. [Implementation Notes](#implementation-notes)
 14. [Example](#example)
+
+**Changes in v1.4:** Headless/containerized environment fallback for `open obsidian://` URI calls.
 
 **Changes in v1.3:** Link pass fidelity/performance threshold (500 notes), index file spec, stale write cap (20/run), glob duplication fix.
 
@@ -586,8 +588,10 @@ print(random.choice(eligible))
 **Opening a note in Obsidian:**
 ```bash
 encoded=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "relative/path/to/note.md")
-open "obsidian://open?vault=VaultName&file=$encoded"
+open "obsidian://open?vault=VaultName&file=$encoded" 2>/dev/null || echo "obsidian://open?vault=VaultName&file=$encoded"
 ```
+
+The `|| echo` fallback handles headless or containerized environments where the `open` binary or Obsidian URI handler is unavailable — it prints the URI so it can be opened manually.
 
 **Finding the most recently modified `#flipped` note (for /flop):**
 ```python
