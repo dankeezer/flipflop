@@ -92,6 +92,8 @@ Then tell the user:
 
 ---
 
-## Setting this up as a Claude Project
+## Setting this up as a persistent workspace
 
-For zero-friction web flipping, paste the contents of this file into a [Claude Project](https://claude.ai) as the project instructions. Every new chat in that project will have FlipFlop ready — just open a new chat and paste your note.
+Most web LLMs support a persistent workspace where system instructions apply to every new chat. Paste the contents of this file there — every new chat in that workspace will have FlipFlop ready. Just open a new chat and paste your note.
+
+Examples: Claude Projects, ChatGPT Custom GPTs, Gemini Gems.

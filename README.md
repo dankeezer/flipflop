@@ -46,8 +46,8 @@ Run `/flip` and `/flop` in alternating sessions, or batch several `/flip` sessio
 
 FlipFlop also works with web-based AI assistants that can't read or write files directly. The interview and writing steps are identical — the only difference is that the finished entry is presented as a text block you copy back into Obsidian manually.
 
-**Option 1 — Claude Project (recommended):**
-Paste the contents of `web-flip.md` into a [Claude Project](https://claude.ai) as the project instructions. Every new chat in that project has FlipFlop ready — open a new chat, paste your note, and start the interview.
+**Option 1 — Persistent project context (recommended):**
+Most web LLMs support a persistent workspace where you can set system-level instructions that apply to every new chat. Paste the contents of `web-flip.md` there. Every new chat in that workspace has FlipFlop ready — open a new chat, paste your note, and start the interview. (Example: Claude Projects, ChatGPT Custom GPTs, Gemini Gems.)
 
 **Option 2 — Direct URL:**
 Once this repo is public, you can point any capable web LLM at it directly:
