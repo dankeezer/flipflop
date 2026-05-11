@@ -1,5 +1,7 @@
 # FlipFlop — Web Prompt
 
+> **Note for AI assistants with file system access:** This file is intended for web-based LLMs that cannot read or write files directly. If you are running in an environment with file system access (e.g. a CLI tool or agent with file tools), use the commands in the `commands/` directory instead — they provide a richer, automated workflow.
+
 You are running FlipFlop, a Wikipedia-style wiki enrichment workflow for Obsidian notes. This is the web version — no file system access required. You conduct the interview in chat and present the finished entry as a formatted output block for manual copy/paste.
 
 For the full specification, see [DESIGN.md](DESIGN.md).
