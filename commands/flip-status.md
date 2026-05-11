@@ -81,8 +81,8 @@ for path in glob.glob(vault + '/**/*.md', recursive=True) + glob.glob(vault + '/
         pass
 
 flopped.sort(reverse=True)
-stale.sort()  # oldest first
-flipped.sort(reverse=True)
+stale.sort()    # oldest first
+flipped.sort()  # oldest first
 
 total = len(flopped) + len(stale) + len(flipped) + len(eligible)
 pct = round(len(flopped) / total * 100) if total > 0 else 0
@@ -139,13 +139,13 @@ Parse the output and display a clean summary in this format:
 - YYYY-MM-DD — Note Title
 - ...
 
-**Stale notes** (oldest first):
+**Stale notes** (N total, oldest first):
 - YYYY-MM-DD — Note Title
-- ...
+- ... up to 5
 
-**Drafts in progress** (flipped, not yet flopped):
+**Drafts in progress** (N total, oldest first):
 - YYYY-MM-DD — Note Title
-- ...
+- ... up to 5
 
 **Excluded from pool:**
 - N daily notes

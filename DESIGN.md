@@ -221,8 +221,8 @@ The command displays:
 - A **progress bar** showing the percentage of in-play notes that have been flopped
 - A **count table** breaking down flopped, flipped (draft), stale, and eligible notes
 - The **5 most recently flopped notes** by file modification date
-- Any **drafts currently in progress** (flipped but not yet flopped)
-- Any **stale notes** awaiting re-flip
+- **Drafts in progress** — total count, oldest 5 shown
+- **Stale notes** — total count, oldest 5 shown
 - A breakdown of **excluded notes** (daily notes, folder-excluded, archived, completed checklists)
 - A **suggested next action** based on current state
 
@@ -247,13 +247,17 @@ Recently flopped:
 - 2026-05-08 — Blue Ridge Trail Notes
 - 2026-05-08 — Standing Desk
 
-Drafts in progress:
+Drafts in progress (3, oldest first):
+- 2026-03-12 — Blue Ridge Trail Notes
+- 2026-04-28 — Standing Desk
 - 2026-05-10 — Conference Room Booking Policy
 
-Stale notes:
-- 2025-01-14 — Acme Plumbing
-- 2024-11-03 — Dr. Chen
+Stale notes (8, oldest first):
 - 2024-09-22 — Rental Car Policy
+- 2024-11-03 — Dr. Chen
+- 2025-01-14 — Acme Plumbing
+- 2025-02-28 — Garrison Inn
+- 2025-04-01 — Q3 Website Redesign
 
 Excluded from pool:
 - 31 daily notes
@@ -270,7 +274,7 @@ Excluded from pool:
 
 Before reporting, `/flip-status` scans all flopped notes. For each one, it reads the `Flopped` frontmatter field and the optional `stale_after_days` field (defaulting to 365). If the elapsed time exceeds the threshold, it adds `stale` to the note's tags. This is the only place `stale` is written — no other command stamps it.
 
-Stale notes are counted separately in the stats table and listed in their own section. They are included in "total in play" alongside flopped, flipped, and eligible notes.
+Stale notes are counted separately in the stats table and listed in their own section (oldest 5 shown, with total count). Drafts follow the same pattern. Both are sorted oldest first — the longest-waiting items are most pressing. They are included in "total in play" alongside flopped, flipped, and eligible notes.
 
 ### Implementation
 
