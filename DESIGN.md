@@ -1,6 +1,6 @@
 # FlipFlop — Design Document
 
-**Version 1.2**
+**Version 1.3**
 
 FlipFlop is a progressive wiki-building system for Obsidian vaults. It uses a conversational AI assistant to transform rough, unstructured notes into polished Wikipedia-style reference entries through a structured interview process. The system is LLM-agnostic and requires only that the AI has read and write access to the vault's markdown files.
 
@@ -22,6 +22,8 @@ FlipFlop is a progressive wiki-building system for Obsidian vaults. It uses a co
 12. [Link Pass](#link-pass)
 13. [Implementation Notes](#implementation-notes)
 14. [Example](#example)
+
+**Changes in v1.3:** Link pass fidelity/performance threshold (500 notes), index file spec, stale write cap (20/run), glob duplication fix.
 
 **Changes in v1.2:** Stale tag lifecycle, `Flopped` frontmatter date, per-note `stale_after_days`, re-flip mode in `/flip`, staleness check and stale stats in `/flip-status`, question sequencing guidance, content type filter, session length guidance, LLM compatibility note.
 
@@ -508,12 +510,23 @@ It is a poor fit for **project notes**, **process documentation**, and **opinion
 
 After drafting the entry, scan for concepts that might have notes in the vault.
 
+### Fidelity vs. Performance Threshold
+
+The link pass uses different strategies depending on vault size:
+
+**Below 500 notes** — full fidelity mode. Get all note names from the vault and pass the complete list to the AI. The AI checks every name against the draft and reads candidate notes to confirm matches. At this scale the list is small (~12KB or less) and every potential connection is worth catching.
+
+**500 notes or above** — filtered mode. Instead of passing all note names, pre-filter the list before giving it to the AI: keep only notes whose titles share meaningful words with the draft content (exclude common words: the, a, in, of, etc.). This keeps the candidate list manageable while preserving the most relevant matches. The AI still reads candidate notes to confirm before linking — only the initial list is narrowed.
+
+The 500-note threshold applies to total vault size, not just eligible notes.
+
 ### Process
 
-1. Get all note names from the vault (filename without `.md`)
-2. For each concept, place, person, or object mentioned in the draft, check whether any note name closely matches
-3. If a match looks plausible, read the note briefly to confirm it is genuinely about the same thing
-4. Add a wikilink only if you are confident the note is the right one
+1. Count total notes in the vault to determine which mode to use
+2. Get note names (filtered or full, per above)
+3. For each concept, place, person, or object mentioned in the draft, check whether any note name closely matches
+4. If a match looks plausible, read the note briefly to confirm it is genuinely about the same thing
+5. Add a wikilink only if you are confident the note is the right one
 
 ### Rules
 
@@ -540,6 +553,7 @@ excluded_folders = ['Archive', 'Templates', 'Meta']  # configure per vault
 excluded_files = []
 
 eligible = []
+# glob '/**/*.md' with recursive=True matches root-level files too — no second glob needed
 for path in glob.glob(vault + '/**/*.md', recursive=True):
     rel = os.path.relpath(path, vault)
     if daily.match(os.path.basename(rel)):
@@ -616,6 +630,94 @@ def flop_note(path):
     content = re.sub(r'  - stale\n', '', content)
 
     open(path, 'w').write(content)
+```
+
+### Index File
+
+At vault sizes above ~500 notes, reading every `.md` file on each command invocation becomes slow. FlipFlop uses an optional index file to cache note metadata and avoid full rescans.
+
+**Location:** `{vault}/.flipflop-index.json` — add to `.gitignore` if the vault is version-controlled.
+
+**Structure:**
+```json
+{
+  "version": 1,
+  "built_at": "2026-05-10T12:00:00",
+  "notes": {
+    "01 - Note Box/Garrison Inn.md": {
+      "mtime": 1746835200.0,
+      "title": "Garrison Inn",
+      "status": "flopped",
+      "flopped_date": "2026-05-09",
+      "stale_after_days": null
+    }
+  }
+}
+```
+
+Status values: `eligible`, `flipped`, `flopped`, `stale`, `excluded`.
+
+**Rebuild strategy:** On each command run, `os.stat` every `.md` file (fast — no file reads). Compare stored mtimes to current mtimes. Re-read and re-categorize only files that have changed, been added, or been deleted. Write the updated index back to disk.
+
+**Activation threshold:** Commands use the index when the vault contains 500 or more `.md` files. Below that threshold, a direct full scan is fast enough and simpler to reason about.
+
+**Stale write cap:** When stamping `stale` tags, write at most 20 files per invocation. This prevents a batch of hundreds of simultaneous writes from conflicting with Obsidian Sync on a mature vault. Remaining eligible-for-stale notes will be stamped on subsequent runs.
+
+```python
+import json, os, re, glob
+from datetime import date
+
+INDEX_PATH = '{vault}/.flipflop-index.json'
+STALE_WRITE_CAP = 20
+
+def load_index(vault):
+    try:
+        return json.load(open(INDEX_PATH.format(vault=vault)))
+    except:
+        return {'version': 1, 'notes': {}}
+
+def save_index(vault, index):
+    index['built_at'] = date.today().isoformat()
+    json.dump(index, open(INDEX_PATH.format(vault=vault), 'w'), indent=2)
+
+def refresh_index(vault, index, excluded_folders, excluded_files, default_stale_days=365):
+    today = date.today()
+    current_paths = set(
+        p for p in glob.glob(vault + '/**/*.md', recursive=True)
+        if not any(os.path.relpath(p, vault).startswith(e) for e in excluded_folders)
+        and os.path.basename(p) not in excluded_files
+    )
+    stored = index.get('notes', {})
+    stale_writes = 0
+
+    # Remove deleted files
+    for rel in list(stored):
+        if os.path.join(vault, rel) not in current_paths:
+            del stored[rel]
+
+    # Re-read changed or new files
+    for path in current_paths:
+        rel = os.path.relpath(path, vault)
+        mtime = os.path.getmtime(path)
+        if rel in stored and stored[rel]['mtime'] == mtime:
+            # Check stale promotion even if file unchanged
+            if stored[rel]['status'] == 'flopped' and stale_writes < STALE_WRITE_CAP:
+                threshold = stored[rel].get('stale_after_days') or default_stale_days
+                ref = stored[rel].get('flopped_date')
+                ref_date = date.fromisoformat(ref) if ref else date.fromtimestamp(mtime)
+                if (today - ref_date).days >= threshold:
+                    _stamp_stale(path)
+                    stored[rel]['status'] = 'stale'
+                    stored[rel]['mtime'] = os.path.getmtime(path)
+                    stale_writes += 1
+            continue
+        stored[rel] = _categorize(path, rel, mtime, today, default_stale_days,
+                                   stale_writes < STALE_WRITE_CAP)
+        if stored[rel]['status'] == 'stale':
+            stale_writes += 1
+
+    index['notes'] = stored
+    return index
 ```
 
 ### LLM Compatibility
