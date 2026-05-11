@@ -24,7 +24,7 @@ No Obsidian plugins required. No database. No special configuration.
 
 ## Setup
 
-Point your AI assistant at https://github.com/dankeezer/flipflop and ask it to set up FlipFlop. It will fetch `setup.md`, detect your vault and folder structure automatically, propose a configuration for you to confirm, and install the command files in one step.
+Paste in this repo URL https://github.com/dankeezer/flipflop and the LLM will do the rest. It will fetch `setup.md`, detect your vault and folder structure automatically, propose a configuration for you to confirm, and install the command files in one step.
 
 To set up manually, copy the three files from `commands/` wherever your AI tool loads custom prompt files, then replace the two placeholders in each:
 - `YOUR_VAULT_PATH` — absolute path to your vault folder
@@ -47,13 +47,10 @@ Run `/flip` and `/flop` in alternating sessions, or batch several `/flip` sessio
 FlipFlop also works with web-based AI assistants that can't read or write files directly. The interview and writing steps are identical — the only difference is that the finished entry is presented as a text block you copy back into Obsidian manually.
 
 **Option 1 — Direct URL (simplest):**
-Paste https://github.com/dankeezer/flipflop/blob/main/web-flip.md into any capable web LLM along with your note. No setup required.
+Paste https://github.com/dankeezer/flipflop into any capable web LLM along and then `/flip`. No setup required.
 
 **Option 2 — Persistent project context:**
-Most web LLMs support a persistent workspace where system instructions apply to every new chat. Paste the contents of `web-flip.md` into your workspace once. Every new chat has FlipFlop ready — open a new chat, paste your note, and start the interview. (Examples: Claude Projects, ChatGPT Custom GPTs, Gemini Gems.)
-
-**Option 3 — One-time paste:**
-Copy the contents of `web-flip.md`, paste it into any chat session along with your note. Works with any LLM.
+Most web LLMs support a persistent workspace where system instructions apply to every new chat. Paste URL https://github.com/dankeezer/flipflop into your workspace instructions once. Every new chat has FlipFlop ready — open a new chat, paste your note, and start the interview. (Examples: Claude Projects, ChatGPT Custom GPTs, Gemini Gems.)
 
 The web workflow produces the same Wikipedia-style output as the CLI version. You copy the result back into Obsidian and update the tags manually (`flipped` → `flopped`, add `Flopped: "YYYY-MM-DD"`).
 
