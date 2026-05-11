@@ -148,7 +148,7 @@ Immediately update the note's frontmatter tags before doing anything else — th
 
 Tell the user which note was picked and summarize whatever is already there. Keep it brief. If the note carries `stale`, flag it as a revisit. Examples:
 
-> Flipped: **Garrison Inn** — has an address and a few lines about a stay there. Empty otherwise.
+> Flipped: **Hotel Frederick** — has an address and a few lines about a stay there. Empty otherwise.
 
 > Flipped: **Sous Vide Circulator** — just a model number and a link. No other content.
 
@@ -243,7 +243,7 @@ Eligible (waiting)   164
 Total in play        197
 
 Recently flopped:
-- 2026-05-09 — Garrison Inn
+- 2026-05-09 — Hotel Frederick
 - 2026-05-09 — Acme Sous Vide Circulator
 - 2026-05-09 — Q3 Website Redesign
 - 2026-05-08 — Blue Ridge Trail Notes
@@ -258,7 +258,7 @@ Stale notes (8, oldest first):
 - 2024-09-22 — Rental Car Policy
 - 2024-11-03 — Dr. Chen
 - 2025-01-14 — Acme Plumbing
-- 2025-02-28 — Garrison Inn
+- 2025-02-28 — Hotel Frederick
 - 2025-04-01 — Q3 Website Redesign
 
 Excluded from pool:
@@ -377,10 +377,10 @@ FlipFlop entries follow Wikipedia's core content policies, adapted for personal 
 The opening sentence must define what the thing *is* before any personal context or framing. The subject comes first.
 
 **Wrong:**
-> The Garrison Inn was where we stayed during the Newburyport trip in 2019.
+> The Hotel Frederick was where we stayed during our trip to Boonville.
 
 **Right:**
-> The Garrison Inn is a boutique hotel located at 11 Brown Square in Newburyport, Massachusetts.
+> The Hotel Frederick is a boutique hotel located at 501 High Street in Boonville, Missouri.
 
 ### Neutral Point of View (NPOV)
 
@@ -411,7 +411,7 @@ Short declarative sentences. Avoid hedging, padding, and narrative framing. Each
 Any website, product page, or external document referenced during the interview should be cited as a Markdown footnote at the bottom of the entry:
 
 ```markdown
-[^1]: Garrison Inn website. https://example.com/garrison-inn
+[^1]: Hotel Frederick website. https://example.com/hotel-frederick
 [^2]: Acme Circulator product page. https://example.com/acme-sv1200
 ```
 
@@ -644,9 +644,9 @@ At vault sizes above ~500 notes, reading every `.md` file on each command invoca
   "version": 1,
   "built_at": "2026-05-10T12:00:00",
   "notes": {
-    "01 - Note Box/Garrison Inn.md": {
+    "01 - Note Box/Hotel Frederick.md": {
       "mtime": 1746835200.0,
-      "title": "Garrison Inn",
+      "title": "Hotel Frederick",
       "status": "flopped",
       "flopped_date": "2026-05-09",
       "stale_after_days": null
@@ -752,7 +752,7 @@ When setting up FlipFlop for a new vault, define:
 
 ## Example
 
-### Before (raw note: `Garrison Inn.md`)
+### Before (raw note: `Hotel Frederick.md`)
 
 ```markdown
 ---
@@ -760,19 +760,19 @@ Created: "2024-09-15"
 Type: Note
 tags:
   - travel
-  - massachusetts
+  - missouri
 ---
-# Garrison Inn
+# Hotel Frederick
 
-11 Brown Square, Newburyport MA
+501 High St, Boonville MO
 
-stayed here for anniversary trip
+stayed here on Katy Trail trip
 really old building
-dog friendly
-good breakfast
+great bar downstairs
+good location
 ```
 
-### After flip (`Garrison Inn.md`)
+### After flip (`Hotel Frederick.md`)
 
 ```markdown
 ---
@@ -780,33 +780,33 @@ Created: "2024-09-15"
 Type: Note
 tags:
   - travel
-  - massachusetts
+  - missouri
   - flipped
 ---
-# Garrison Inn
+# Hotel Frederick
 
-The Garrison Inn is a boutique hotel located at 11 Brown Square in the historic district of Newburyport, Massachusetts. The building dates to 1809 and operated as a private residence before its conversion to a hotel. It is listed on the National Register of Historic Places.
+The Hotel Frederick is a boutique hotel located at 501 High Street in downtown Boonville, Missouri. Built in 1905 by local miller and banker Charles Augustus Sombart and named for his son Frederick, the building is considered the finest example of Romanesque Revival architecture in the region. It is listed on the National Register of Historic Places.
 
 ## Accommodations
 
-The hotel has 24 guest rooms across four floors. The building retains original architectural features including wide-plank hardwood floors and exposed brick. Amenities include a complimentary breakfast served in the ground-floor dining room. The property is dog-friendly.
+The hotel has 33 guest rooms. The building served for several decades as the Boonville Retirement Center before closing in 1994 and falling into disrepair. A $4 million restoration by owners Bill and Maggie Haw was completed in 2007. Amenities include a restaurant and lounge on the main level and The Brick Room, a lower-level bar with live entertainment on weekends. Bike rentals are available on-site.
 
 ## Access
 
-The inn is located in downtown Newburyport, within walking distance of the waterfront, Market Square, and the Merrimack River. Parking is available on-street and in nearby public lots.
+The hotel is located in downtown Boonville adjacent to the Katy Trail, a long-distance rail trail that follows the Missouri River. Free parking is available on-site.
 
-[^1]: Garrison Inn website. https://www.garrisoninn.com
+[^1]: Hotel Frederick website. https://www.hotelfrederick.com
 
 ---
 
 ## Original Content
 
-11 Brown Square, Newburyport MA
+501 High St, Boonville MO
 
-stayed here for anniversary trip
+stayed here on Katy Trail trip
 really old building
-dog friendly
-good breakfast
+great bar downstairs
+good location
 ```
 
 ### After flop
@@ -817,7 +817,7 @@ Two changes: the tag is promoted and the `Flopped` date is written:
 Flopped: "2026-05-10"    ← added
 tags:
   - travel
-  - massachusetts
+  - missouri
   - flopped              ← was: flipped
 ```
 

@@ -77,7 +77,7 @@ Read the note content. Immediately update the note's frontmatter tags before doi
 
 Tell the user which note was picked and summarize whatever is already there. If the note carries `stale`, flag it as a revisit. Examples:
 
-> Flipped: **Garrison Inn** — has an address and a few lines about a stay there. Empty otherwise.
+> Flipped: **Hotel Frederick** — has an address and a few lines about a stay there. Empty otherwise.
 
 > Re-flip: **Acme Plumbing** — flopped 2025-01-14, marked stale. Existing entry covers contact info and two jobs. Let's update it.
 
