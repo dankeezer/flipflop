@@ -110,7 +110,7 @@ Keep asking until you have enough for a solid entry. When ready: "I think I have
 - Plain, direct language: short declarative sentences, no hedging or padding
 - Footnotes for external sources: `[^1]: Description. https://url`
 
-**For project notes, process documentation, or opinions** — adapt the format to the content. A project note might use Scope, Status, and Next Steps sections. A process note might use numbered steps. Do not force Wikipedia format onto content it doesn't suit. If the note is a project (has a goal, ongoing status, or open next steps), add `project` to the frontmatter tags if not already present.
+**For project notes, process documentation, or opinions** — adapt the format to the content. A process note might use numbered steps. Do not force Wikipedia format onto content it doesn't suit. If the note is a project (has a goal, ongoing status, or open next steps), add `project` to the frontmatter tags if not already present, and always include a `## Scope of Work` section describing what needs to be done. Other common sections: Status (reverse-chronological dated entries), Next Steps, and product/option research sections as warranted.
 
 Always include an opening paragraph (no heading) and `##` sections as the content warrants.
 
