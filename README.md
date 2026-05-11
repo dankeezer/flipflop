@@ -42,6 +42,22 @@ Update the `excluded_folders` list to match your vault structure, then run `/fli
 
 Run `/flip` and `/flop` in alternating sessions, or batch several `/flip` sessions before flopping. The system is designed to work at whatever pace fits your habits.
 
+## Web Usage (no file access required)
+
+FlipFlop also works with web-based AI assistants that can't read or write files directly. The interview and writing steps are identical — the only difference is that the finished entry is presented as a text block you copy back into Obsidian manually.
+
+**Option 1 — Claude Project (recommended):**
+Paste the contents of `web-flip.md` into a [Claude Project](https://claude.ai) as the project instructions. Every new chat in that project has FlipFlop ready — open a new chat, paste your note, and start the interview.
+
+**Option 2 — Direct URL:**
+Once this repo is public, you can point any capable web LLM at it directly:
+> "Fetch the FlipFlop flip instructions from github.com/dankeezer/flipflop and flip this note for me: [paste note]"
+
+**Option 3 — One-time paste:**
+Copy the contents of `web-flip.md`, paste it into any chat session, then paste your note. Works with any LLM.
+
+The web workflow produces the same Wikipedia-style output as the CLI version. You copy the result back into Obsidian and update the tags manually (`flipped` → `flopped`, add `Flopped: "YYYY-MM-DD"`).
+
 ## Staleness
 
 Flopped notes don't stay flopped forever. After 365 days (configurable per-note with `stale_after_days` in frontmatter), `/flip-status` stamps a note as `#stale` and it re-enters the eligible pool. The re-flip interview focuses on what's changed since the note was last written.
