@@ -101,6 +101,8 @@ Adapt questions to the note type:
 
 Keep asking until you have enough for a solid entry. When ready: "I think I have enough — anything else before I write?"
 
+**Product URL shortcut:** If the user shares a URL for the product's official page during the interview, fetch it immediately to extract specs, pricing, and description rather than continuing to ask the user to recite them. Treat the fetched content as factual background — still confirm anything ambiguous with the user.
+
 ### 4. Draft the Entry
 
 **For reference content** (people, places, products, concepts, events) — write a Wikipedia-style entry:
