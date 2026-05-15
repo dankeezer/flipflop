@@ -172,6 +172,8 @@ Adapt the questions to the note type (see [Interview Guidelines](#interview-guid
 
 Keep asking until you have enough material to write a solid entry. When ready, say so and ask if there's anything else before writing.
 
+**Product URL shortcut:** If the user shares a URL for a product's official page during the interview, fetch it immediately to extract specs, pricing, and description. Use the fetched content as factual background rather than asking the user to recite details. Confirm anything ambiguous before writing.
+
 ### Step 4 — Write the Entry
 
 Write a Wikipedia-style wiki entry following the [Writing Principles](#writing-principles) below.
