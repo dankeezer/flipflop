@@ -60,6 +60,32 @@ If the script prints `INDEX_MISSING`, run `/flip-status` first to build the inde
 
 ## Steps
 
+### Resuming an interrupted flip
+
+If the user asks to continue or resume a previous flip (e.g. "continue our flip", "let's pick up where we left off"), find the most recently modified `#flipped` note instead of picking a new one:
+
+```
+python3 -c "
+import os, re, glob
+
+vault = 'YOUR_VAULT_PATH'
+candidates = []
+for path in glob.glob(vault + '/**/*.md', recursive=True):
+    try:
+        content = open(path).read()
+        if re.search(r'tags:.*\n(  - .*\n)*  - flipped', content, re.MULTILINE):
+            candidates.append((os.path.getmtime(path), path))
+    except:
+        pass
+candidates.sort(reverse=True)
+print(candidates[0][1] if candidates else 'NONE')
+"
+```
+
+Read the note, open it in Obsidian, then jump directly to Step 2. Do not pick a new note and do not update the tags — the note is already tagged `flipped`.
+
+---
+
 ### 1. Pick and Open
 
 Run the script above to select a note. Open it in Obsidian:

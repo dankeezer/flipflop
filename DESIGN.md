@@ -137,6 +137,12 @@ Selection from the eligible pool should be random. This prevents bias toward rec
 
 ## The Flip Command
 
+### Resuming an Interrupted Flip
+
+If the user asks to resume or continue a previous flip (e.g. "continue our flip", "pick up where we left off"), do not pick a new note. Instead, find the most recently modified note tagged `flipped` and resume from Step 2. Do not update the tags — the note is already marked as in-progress.
+
+If no `#flipped` note exists, proceed with a normal flip.
+
 ### Step 1 — Select and Open
 
 Pick a random eligible note from the vault. Open it in Obsidian (if the integration supports it). Read its full content.
