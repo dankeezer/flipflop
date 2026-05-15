@@ -1,6 +1,6 @@
 # FlipFlop — Design Document
 
-**Version 1.4**
+**Version 1.5**
 
 FlipFlop is a progressive wiki-building system for Obsidian vaults. It uses a conversational AI assistant to transform rough, unstructured notes into polished Wikipedia-style reference entries through a structured interview process. The system is LLM-agnostic and requires only that the AI has read and write access to the vault's markdown files.
 
@@ -22,6 +22,8 @@ FlipFlop is a progressive wiki-building system for Obsidian vaults. It uses a co
 12. [Link Pass](#link-pass)
 13. [Implementation Notes](#implementation-notes)
 14. [Example](#example)
+
+**Changes in v1.5:** Resume path for interrupted flips; omit empty Original Content section; fetch product URLs during interview.
 
 **Changes in v1.4:** Headless/containerized environment fallback for `open obsidian://` URI calls.
 
