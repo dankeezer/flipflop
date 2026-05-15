@@ -167,7 +167,7 @@ tags:
 
 If there was no frontmatter, create it with at minimum `Created` (today's date), `Type: Note`, and `tags: [flipped]`.
 
-The `---` divider and `## Original Content` heading are always present, even if the original note was empty.
+If the original note had content, append a `---` divider and `## Original Content` section with the original text verbatim. If the original note was empty, omit the divider and section entirely.
 
 ### 7. Open in Obsidian Again
 
